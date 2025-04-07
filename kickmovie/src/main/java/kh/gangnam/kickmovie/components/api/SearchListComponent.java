@@ -16,6 +16,7 @@ public class SearchListComponent{
     public ResponseEntity<?> fetchData(String url, HttpHeaders headers) {
         // TODO API 검색 영화 리스트 응답 데이터 DTO로 반환하기
         // URL과 Header는 Service에서 구현
+        System.out.println("test");
         return null;
     }
 }
