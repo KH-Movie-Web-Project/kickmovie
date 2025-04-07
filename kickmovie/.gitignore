@@ -39,3 +39,7 @@ out/
 ## .gitignore
 
 .gitignore
+
+## .idea
+
+.idea/*
