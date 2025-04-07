@@ -25,4 +25,5 @@ public class ApiClient {
     public ResponseEntity<?> actorListData(String url, HttpHeaders headers) {
         return actorListComponent.fetchData(url, headers);
     }
+
 }
