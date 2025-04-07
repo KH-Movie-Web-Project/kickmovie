@@ -1,8 +1,11 @@
 package kh.gangnam.kickmovie.service;
 
 import kh.gangnam.kickmovie.components.ApiClient;
+import kh.gangnam.kickmovie.components.api.ActorListComponent;
+import kh.gangnam.kickmovie.dto.ActorDto;
 import kh.gangnam.kickmovie.util.ApiUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +15,7 @@ public class ApiService {
 
     private final ApiUtil apiUtil;
     private final ApiClient apiClient;
+    private final ActorListComponent actorListComponent;
 
     // TODO 영화 검색어로 가져오기 Service 로직
     public ResponseEntity<?> searchMovie(String query) {
@@ -32,8 +36,10 @@ public class ApiService {
     }
 
     // TODO 영화 배우 데이터 가져오기 Service 로직
-    public ResponseEntity<?> actorMovie(String movieID) {
+    public ResponseEntity<ActorDto> actorMovie(String movieID) {
         String url = apiUtil.getActorListURL(movieID);
-        return apiClient.actorListData(url, apiUtil.createHeaders());
+        HttpHeaders headers = apiUtil.createHeaders();
+        ResponseEntity<ActorDto> response = actorListComponent.fetchData(url,headers);
+        return response;
     }
 }
