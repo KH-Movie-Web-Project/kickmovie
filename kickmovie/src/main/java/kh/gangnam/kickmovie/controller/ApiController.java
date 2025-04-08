@@ -29,7 +29,7 @@ public class ApiController {
 
     // TODO Open API 영화 상세 데이터 받아오기 (movie_id)
     @GetMapping("movie/detail/{movieID}")
-    public ResponseEntity<?> detailMovie(@PathVariable(value = "movie_id") String movieID) {
+    public ResponseEntity<?> detailMovie(@PathVariable(value = "movieID") String movieID) {
         return apiService.detailMovie(movieID);
     }
 
