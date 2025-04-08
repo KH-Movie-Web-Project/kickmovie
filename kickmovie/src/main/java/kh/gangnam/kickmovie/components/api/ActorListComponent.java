@@ -22,6 +22,6 @@ public class ActorListComponent{
         // URL과 Header는 Service에서 구현
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<ActorDto> response = restTemplate.exchange(url, HttpMethod.GET, entity, ActorDto.class);
-        return response;
+        return ResponseEntity.ok(response.getBody());
     }
 }
