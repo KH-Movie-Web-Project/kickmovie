@@ -34,9 +34,9 @@ public class ApiController {
     }
 
     // TODO Open API 영화 배우 데이터 받아오기 (actor_id)
-    @GetMapping("/movie/actor/{actorID}")
-    public ResponseEntity<?> actorMovie(@PathVariable(value = "actor_id") String actorID) {
-        return apiService.actorMovie(actorID);
+    @GetMapping("/movie/actor/{movieID}")
+    public ResponseEntity<?> actorMovie(@PathVariable(value = "movieID") String movieID) {
+        return apiService.actorMovie(movieID);
     }
 
 }
