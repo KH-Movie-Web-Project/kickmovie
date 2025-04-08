@@ -19,6 +19,7 @@ bin/
 
 ### IntelliJ IDEA ###
 .idea/
+../.idea/
 *.iws
 *.iml
 *.ipr
@@ -35,4 +36,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### application ###
+
+/src/resources/application.yml
 
