@@ -16,6 +16,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MovieDetailDTO {
 
+    private long id;
     private boolean adult;
     @JsonProperty("belongs_to_collection")
     private BelongsToCollectionDTO belongsToCollection;

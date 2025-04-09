@@ -6,6 +6,7 @@ import java.util.List;
 
 public class MovieDetail {
 
+    private long id;
     private boolean adult;
     private BelongsToCollectionDTO belongsToCollection;
     private int budget;
