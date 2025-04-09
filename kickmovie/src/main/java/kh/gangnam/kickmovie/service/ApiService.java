@@ -15,7 +15,6 @@ public class ApiService {
 
     private final ApiUtil apiUtil;
     private final ApiClient apiClient;
-    private final ActorListComponent actorListComponent;
 
     // TODO 영화 검색어로 가져오기 Service 로직
     public ResponseEntity<?> searchMovie(String query) {
@@ -36,10 +35,8 @@ public class ApiService {
     }
 
     // TODO 영화 배우 데이터 가져오기 Service 로직
-    public ResponseEntity<ActorDto> actorMovie(String movieID) {
+    public ResponseEntity<?> actorMovie(String movieID) {
         String url = apiUtil.getActorListURL(movieID);
-        HttpHeaders headers = apiUtil.createHeaders();
-        ResponseEntity<ActorDto> response = actorListComponent.fetchData(url,headers);
-        return response;
+        return apiClient.actorListData(url, apiUtil.createHeaders());
     }
 }
