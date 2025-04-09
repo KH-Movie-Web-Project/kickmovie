@@ -1,6 +1,6 @@
 package kh.gangnam.kickmovie.service;
 
-import kh.gangnam.kickmovie.components.ApiClient;
+import kh.gangnam.kickmovie.components.ApiResponse;
 import kh.gangnam.kickmovie.components.api.ActorListComponent;
 import kh.gangnam.kickmovie.dto.ActorDto;
 import kh.gangnam.kickmovie.util.ApiUtil;
@@ -14,25 +14,25 @@ import org.springframework.stereotype.Service;
 public class ApiService {
 
     private final ApiUtil apiUtil;
-    private final ApiClient apiClient;
+    private final ApiResponse apiResponse;
     private final ActorListComponent actorListComponent;
 
     // TODO 영화 검색어로 가져오기 Service 로직
     public ResponseEntity<?> searchMovie(String query) {
         String url = apiUtil.getSearchURL(query);
-        return apiClient.searchListData(url, apiUtil.createHeaders());
+        return apiResponse.searchListData(url, apiUtil.createHeaders());
     }
 
     // TODO 영화 검색어, 년도로 가져오기 Service 로직
     public ResponseEntity<?> searchMovie(String query, String year) {
         String url = apiUtil.getSearchURL(query, year);
-        return apiClient.searchListData(url, apiUtil.createHeaders());
+        return apiResponse.searchListData(url, apiUtil.createHeaders());
     }
 
     // TODO 영화 상세 데이터 가져오기 Service 로직
     public ResponseEntity<?> detailMovie(String movieId) {
         String url = apiUtil.getDetailURL(movieId);
-        return apiClient.detailData(url, apiUtil.createHeaders());
+        return apiResponse.detailData(url, apiUtil.createHeaders());
     }
 
     // TODO 영화 배우 데이터 가져오기 Service 로직
