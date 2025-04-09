@@ -1,5 +1,6 @@
 package kh.gangnam.kickmovie.util;
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,9 @@ public class ApiUtil {
     private String detailURL;
     @Value("${api.actorListMovie}")
     private String actorListURL;
+    @Getter
+    @Value("${api.genre}")
+    private String genreURL;
 
     public String getSearchURL(String query){
         return searchURL + "?query=" + query + "&language=ko";
