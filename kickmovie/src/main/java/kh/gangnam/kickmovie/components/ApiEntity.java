@@ -26,10 +26,12 @@ public class ApiEntity {
         List<MovieSearch> movieSearchList = new ArrayList<>();
         for (SearchResultDTO resultDTO : dto.getResults()) {
             MovieSearch entity = modelMapper.map(resultDTO, MovieSearch.class);
+            // log 부분
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
             String prettyDTO = objectMapper.writeValueAsString(entity);
             log.info("Entity: \n{}", prettyDTO);
+            // 여기까지 로그
             movieSearchList.add(entity);
         }
     }
