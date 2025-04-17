@@ -31,6 +31,9 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	// ModelMapper DTO와 Entity의 필드 이름이 같으면 자동으로 매핑해주는 라이브러리
+	implementation 'org.modelmapper:modelmapper:3.2.0'
+
 }
 
 tasks.named('test') {
