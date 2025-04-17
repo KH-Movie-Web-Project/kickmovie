@@ -1,19 +1,17 @@
-package kh.gangnam.kickmovie.dto;
+package kh.gangnam.kickmovie.entity;
+
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
+import lombok.ToString;
 
 @Getter
 @Setter
-@NoArgsConstructor
-public class SearchResultDTO {
+@ToString
+public class MovieSearch {
     private int id;
     private boolean adult;
     private String backdrop_path;
-    private List<Integer> genre_ids;
     private String original_language;
     private String original_title;
     private String overview;
