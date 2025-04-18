@@ -41,19 +41,31 @@ public class ApiEntity {
     }
     // TODO MovieDetailDTO MovieDetail 엔티티로 변환 후 엔티티 반환
     // MovieDetailDTO → MovieDetail
-    public MovieDetail convertToEntity(MovieDetailDTO dto) {
-        return modelMapper.map(dto, MovieDetail.class);
+    public MovieDetail convertToEntity(MovieDetailDTO dto) throws JsonProcessingException {
+        MovieDetail entity = modelMapper.map(dto, MovieDetail.class);
+        // log 부분
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        String prettyDTO = objectMapper.writeValueAsString(entity);
+        log.info("MovieDetail Entity:\n{}", prettyDTO);
+        // 여기까지 로그
+        return entity;
     }
-
 
     // TODO ActorDTO actor 엔티티로 변환 후 엔티티 반환
     // ActorDTO → List<Actor>
-    public List<Actor> convertToEntity(ActorDto dto) {
+    public List<Actor> convertToEntity(ActorDto dto) throws JsonProcessingException {
         List<Actor> actorList = new ArrayList<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        // log 부분
         for (CastDto castDto : dto.getCast()) {
             Actor actor = modelMapper.map(castDto, Actor.class);
+            String prettyActor = objectMapper.writeValueAsString(actor);
+            log.info("Actor Entity:\n{}", prettyActor);
             actorList.add(actor);
         }
+        // 여기까지 로그
         return actorList;
     }
 }
