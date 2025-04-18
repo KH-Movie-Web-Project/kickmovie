@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
-
+@Entity
 @Setter
 @Getter
 public class Actor {
@@ -20,5 +20,6 @@ public class Actor {
     private int castId;
     private String character;
     private String creditId;
-    private int order;
+    private int actorOrder;
+    //private int order; -> order는 예약어라서 actorOrder 로 변환
 }

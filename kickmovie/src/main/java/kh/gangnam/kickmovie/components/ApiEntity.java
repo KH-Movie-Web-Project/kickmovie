@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import kh.gangnam.kickmovie.dto.*;
 import kh.gangnam.kickmovie.entity.Actor;
+import kh.gangnam.kickmovie.entity.MovieDetail;
 import kh.gangnam.kickmovie.entity.MovieSearch;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,8 @@ public class ApiEntity {
     private final ModelMapper modelMapper;
 
     // TODO MovieSearchDTO MovieSearch 엔티티로 변환 후 엔티티 반환
-    public void convertToEntity(MovieSearchDTO dto) throws JsonProcessingException {
+    // MovieSearchDTO → List<MovieSearch>
+    public List<MovieSearch> convertToEntity(MovieSearchDTO dto) throws JsonProcessingException {
         List<MovieSearch> movieSearchList = new ArrayList<>();
         for (SearchResultDTO resultDTO : dto.getResults()) {
             MovieSearch entity = modelMapper.map(resultDTO, MovieSearch.class);
@@ -34,27 +36,24 @@ public class ApiEntity {
             // 여기까지 로그
             movieSearchList.add(entity);
         }
-    }
-    // TODO MovieDetailDTO MovieDetail 엔티티로 변환 후 엔티티 반환
-    public void convertToEntity(MovieDetailDTO dto){
+        return movieSearchList;
 
     }
+    // TODO MovieDetailDTO MovieDetail 엔티티로 변환 후 엔티티 반환
+    // MovieDetailDTO → MovieDetail
+    public MovieDetail convertToEntity(MovieDetailDTO dto) {
+        return modelMapper.map(dto, MovieDetail.class);
+    }
+
+
     // TODO ActorDTO actor 엔티티로 변환 후 엔티티 반환
-    public void convertToEntity(ActorDto dto){
+    // ActorDTO → List<Actor>
+    public List<Actor> convertToEntity(ActorDto dto) {
+        List<Actor> actorList = new ArrayList<>();
         for (CastDto castDto : dto.getCast()) {
-            Actor actor = new Actor();
-            actor.setActorId(castDto.getId());
-            actor.setAdult(castDto.isAdult());
-            actor.setGender(castDto.getGender());
-            actor.setKnownForDepartment(castDto.getKnownForDepartment());
-            actor.setName(castDto.getName());
-            actor.setOriginalName(castDto.getOriginalName());
-            actor.setPopularity(castDto.getPopularity());
-            actor.setProfilePath(castDto.getProfilePath());
-            actor.setCastId(castDto.getCastId());
-            actor.setCharacter(castDto.getCharacter());
-            actor.setCreditId(castDto.getCreditId());
-            actor.setOrder(castDto.getOrder());
+            Actor actor = modelMapper.map(castDto, Actor.class);
+            actorList.add(actor);
         }
+        return actorList;
     }
 }
