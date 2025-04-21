@@ -3,7 +3,6 @@ package kh.gangnam.kickmovie.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import kh.gangnam.kickmovie.components.ApiEntity;
 import kh.gangnam.kickmovie.components.ApiResponse;
-import kh.gangnam.kickmovie.components.api.ActorListComponent;
 import kh.gangnam.kickmovie.dto.AllEntityDTO;
 import kh.gangnam.kickmovie.dto.GenreDTO;
 import kh.gangnam.kickmovie.dto.GenreResponse;
@@ -11,7 +10,6 @@ import kh.gangnam.kickmovie.entity.Genre;
 import kh.gangnam.kickmovie.repository.GenreRepository;
 import kh.gangnam.kickmovie.util.ApiUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
