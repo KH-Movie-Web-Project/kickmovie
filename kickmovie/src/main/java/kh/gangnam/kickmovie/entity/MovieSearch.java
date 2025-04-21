@@ -1,18 +1,21 @@
 package kh.gangnam.kickmovie.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
 @ToString
 public class MovieSearch {
     @Id
-    private int id;
+    private Long movie_id;
     private boolean adult;
     private String backdrop_path;
     private String original_language;
@@ -25,4 +28,12 @@ public class MovieSearch {
     private boolean video;
     private double vote_average;
     private int vote_count;
+
+    @ManyToMany
+    @JoinTable(
+            name = "movie_genre",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private List<Genre> genres = new ArrayList<>();
 }
