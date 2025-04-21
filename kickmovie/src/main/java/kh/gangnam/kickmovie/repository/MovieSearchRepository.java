@@ -1,4 +1,7 @@
 package kh.gangnam.kickmovie.repository;
 
-public class MovieSearchRepository {
+import kh.gangnam.kickmovie.entity.MovieSearch;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface MovieSearchRepository extends JpaRepository<MovieSearch, Long> {
 }
