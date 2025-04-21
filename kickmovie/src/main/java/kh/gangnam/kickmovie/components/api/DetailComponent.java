@@ -16,7 +16,7 @@ public class DetailComponent{
 
     private final RestTemplate restTemplate;
 
-    public ResponseEntity<MovieDetailDTO> fetchData(String url, HttpHeaders headers) {
+    public MovieDetailDTO fetchData(String url, HttpHeaders headers) {
 
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 
@@ -26,6 +26,6 @@ public class DetailComponent{
                 requestEntity,
                 MovieDetailDTO.class
         );
-        return ResponseEntity.ok(response.getBody());
+        return response.getBody();
     }
 }
