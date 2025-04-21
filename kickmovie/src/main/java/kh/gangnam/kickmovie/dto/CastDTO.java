@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class CastDto {
+public class CastDTO {
     private boolean adult;
     private int gender;
     private Long id;

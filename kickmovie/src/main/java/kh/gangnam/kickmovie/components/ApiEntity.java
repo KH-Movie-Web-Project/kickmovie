@@ -91,7 +91,7 @@ public class ApiEntity {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         // log 부분
-        for (CastDto castDto : dto.getCast()) {
+        for (CastDTO castDto : dto.getCast()) {
             Actor actor = modelMapper.map(castDto, Actor.class);
             String prettyActor = objectMapper.writeValueAsString(actor);
             log.info("Actor Entity:\n{}", prettyActor);
