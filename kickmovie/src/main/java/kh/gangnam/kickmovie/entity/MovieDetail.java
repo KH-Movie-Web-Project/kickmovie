@@ -4,15 +4,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
 public class MovieDetail {
 
     @Id
-    private Long id;
+    private Long movieId;
 
     private boolean adult;
     private String homePage;
@@ -32,4 +30,7 @@ public class MovieDetail {
     private int voteCount;
 
     // 관계 매핑은 나중에 필요 시 추가
+    @OneToOne
+    @JoinColumn(name = "id") // MovieDetail.id와 MovieSearch.movie_id가 동일
+    private MovieSearch movieSearch;
 }

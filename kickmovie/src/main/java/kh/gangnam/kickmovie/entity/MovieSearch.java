@@ -15,7 +15,7 @@ import java.util.List;
 @ToString
 public class MovieSearch {
     @Id
-    private Long movie_id;
+    private Long movieId;
     private boolean adult;
     private String backdrop_path;
     private String original_language;
@@ -36,4 +36,7 @@ public class MovieSearch {
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
     private List<Genre> genres = new ArrayList<>();
+
+    @OneToOne(mappedBy = "movieSearch")
+    private MovieDetail movieDetail;
 }

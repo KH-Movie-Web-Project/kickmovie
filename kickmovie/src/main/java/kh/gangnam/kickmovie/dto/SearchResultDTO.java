@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class SearchResultDTO {
     @JsonProperty("id")
-    private Long movie_id;
+    private Long movieId;
     private boolean adult;
     private String backdrop_path;
     private List<Integer> genre_ids;

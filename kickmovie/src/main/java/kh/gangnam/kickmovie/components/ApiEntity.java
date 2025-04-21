@@ -42,7 +42,7 @@ public class ApiEntity {
     // TODO AllEntityDTO movieSearch 한 개당 저장할 데이터셋
     private AllEntityDTO setMovieEntity(MovieSearchGenreDTO movieSearchGenreDTO, HttpHeaders headers) throws JsonProcessingException {
 
-        String movie_id = String.valueOf(movieSearchGenreDTO.getMovieSearch().getMovie_id());
+        String movie_id = String.valueOf(movieSearchGenreDTO.getMovieSearch().getMovieId());
         MovieDetail movieDetail = convertToEntity(
                 apiResponse.detailData(
                         apiUtil.getDetailURL(movie_id), headers)
@@ -64,7 +64,7 @@ public class ApiEntity {
         for (SearchResultDTO resultDTO : dto.getResults()) {
             MovieSearch entity = modelMapper.map(resultDTO, MovieSearch.class);
             GenreResponseDTO genreResponseDTO = new GenreResponseDTO(
-                    resultDTO.getMovie_id(),
+                    resultDTO.getMovieId(),
                     resultDTO.getGenre_ids()
             );
             // log 부분

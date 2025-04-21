@@ -13,6 +13,7 @@ public class AllEntityDTO {
     private List<Actor> actorList;
     private MovieDetail movieDetail;
     private MovieSearch movieSearch;
+
     private GenreResponseDTO genres;
 
     public AllEntityDTO(List<Actor> actorList, MovieDetail movieDetail, MovieSearch movieSearch, GenreResponseDTO genres) {

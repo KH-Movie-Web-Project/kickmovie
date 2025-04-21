@@ -1,6 +1,8 @@
 package kh.gangnam.kickmovie.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import kh.gangnam.kickmovie.components.ApiEntity;
 import kh.gangnam.kickmovie.components.ApiResponse;
 import kh.gangnam.kickmovie.dto.AllEntityDTO;
@@ -10,6 +12,7 @@ import kh.gangnam.kickmovie.entity.Genre;
 import kh.gangnam.kickmovie.repository.GenreRepository;
 import kh.gangnam.kickmovie.util.ApiUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +20,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ApiService {
 
     private final ApiUtil apiUtil;
@@ -33,6 +37,11 @@ public class ApiService {
 
         // TODO 엔티티 매핑 후 저장 로직
         for (AllEntityDTO dto : dtoList) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+            objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+            String prettyDTO = objectMapper.writeValueAsString(dto);
+            log.info("Entity: \n{}", prettyDTO);
             // TODO MovieSearch 1 -- 1 MovieDetail
 
             // TODO MovieSearch N -- M Genre
