@@ -3,13 +3,18 @@ package kh.gangnam.kickmovie.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import jakarta.persistence.EntityNotFoundException;
 import kh.gangnam.kickmovie.components.ApiEntity;
 import kh.gangnam.kickmovie.components.ApiResponse;
 import kh.gangnam.kickmovie.dto.AllEntityDTO;
 import kh.gangnam.kickmovie.dto.GenreDTO;
 import kh.gangnam.kickmovie.dto.GenreResponse;
 import kh.gangnam.kickmovie.entity.Genre;
+import kh.gangnam.kickmovie.entity.MovieDetail;
+import kh.gangnam.kickmovie.entity.MovieSearch;
 import kh.gangnam.kickmovie.repository.GenreRepository;
+import kh.gangnam.kickmovie.repository.MovieDetailRepository;
+import kh.gangnam.kickmovie.repository.MovieSearchRepository;
 import kh.gangnam.kickmovie.util.ApiUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +33,8 @@ public class ApiService {
     private final ApiResponse apiResponse;
     private final ApiEntity apiEntity;
     private final GenreRepository genreRepository;
+    private final MovieSearchRepository movieSearchRepository;
+    private final MovieDetailRepository movieDetailRepository;
 
 
     // TODO 영화 검색어 입력시 검색된 영화 저장 트랜잭션
@@ -37,14 +45,35 @@ public class ApiService {
 
         // TODO 엔티티 매핑 후 저장 로직
         for (AllEntityDTO dto : dtoList) {
+            /* 로그 Json 방식으로 찍는 법
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
             String prettyDTO = objectMapper.writeValueAsString(dto);
             log.info("Entity: \n{}", prettyDTO);
-            // TODO MovieSearch 1 -- 1 MovieDetail
+             */
 
             // TODO MovieSearch N -- M Genre
+            MovieSearch movieSearch = dto.getMovieSearch();
+
+            for (Integer genreId : dto.getGenres().getGenre_ids()) {
+                // 1. 장르 리스트를 가지고 GenreRepository 에서 엔티티's 가져오기
+                Genre genre = genreRepository.findById(Long.valueOf(genreId))
+                        .orElseThrow(() -> new EntityNotFoundException("해당 GenreId가 없습니다."));
+                // 2. movieSearch.getGenres().add(genre 엔티티)
+                movieSearch.getGenres().add(genre);
+            }
+            // 3. movieRepository.save(movieSearch)
+            movieSearchRepository.save(movieSearch);
+
+            // TODO MovieSearch 1 -- 1 MovieDetail
+
+            // 2. MovieDetail에 MovieSearch 연관관계 매핑
+            MovieDetail movieDetail = dto.getMovieDetail();
+            movieDetail.setMovieSearch(movieSearch);
+
+            // 3. MovieDetail 저장
+            movieDetail = movieDetailRepository.save(movieDetail);
 
             // TODO MovieDetail 1 -- N MovieActor
 
