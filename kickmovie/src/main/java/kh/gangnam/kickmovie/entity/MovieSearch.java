@@ -1,14 +1,17 @@
 package kh.gangnam.kickmovie.entity;
 
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
+@Entity
 @Getter
 @Setter
 @ToString
 public class MovieSearch {
+    @Id
     private int id;
     private boolean adult;
     private String backdrop_path;
