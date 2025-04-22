@@ -21,6 +21,6 @@ public class Actor {
     private Double popularity;
     private String profilePath;
 
-    @OneToMany(mappedBy = "actor_id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "actor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<MovieActor> movieActors = new ArrayList<>();
 }

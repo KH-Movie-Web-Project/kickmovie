@@ -11,10 +11,7 @@ import kh.gangnam.kickmovie.dto.GenreDTO;
 import kh.gangnam.kickmovie.dto.GenreResponse;
 import kh.gangnam.kickmovie.dto.MovieActorInfoDTO;
 import kh.gangnam.kickmovie.entity.*;
-import kh.gangnam.kickmovie.repository.ActorRepository;
-import kh.gangnam.kickmovie.repository.GenreRepository;
-import kh.gangnam.kickmovie.repository.MovieDetailRepository;
-import kh.gangnam.kickmovie.repository.MovieSearchRepository;
+import kh.gangnam.kickmovie.repository.*;
 import kh.gangnam.kickmovie.util.ApiUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +30,7 @@ public class ApiService {
     private final ApiResponse apiResponse;
     private final ApiEntity apiEntity;
     private final GenreRepository genreRepository;
+    private final MovieActorRepository movieActorRepository;
     private final MovieSearchRepository movieSearchRepository;
     private final MovieDetailRepository movieDetailRepository;
     private final ActorRepository actorRepository;
@@ -73,20 +71,27 @@ public class ApiService {
             MovieDetail movieDetail = dto.getMovieDetail();
             movieDetail.setMovieSearch(movieSearch);
 
+            // TODO MovieDetail 1 -- N MovieActor
+            // TODO Actor 1 -- N MovieActor
+            // 1. Actor 필드 세팅
+            for (MovieActorInfoDTO movieActorInfoDTO : dto.getMovieActorInfoDTOList()) {
+                Actor actor = movieActorInfoDTO.getActor();
+                Actor savedActor = actorRepository.findById(actor.getActorId())
+                        .orElseGet(() -> actor);
+
+                MovieActor movieActor = movieActorInfoDTO.getMovieActor();
+                movieActor.setMovieDetail(movieDetail);
+                movieActor.setActor(savedActor);
+
+                movieDetail.getMovieActors().add(movieActor);
+                savedActor.getMovieActors().add(movieActor);
+
+                actorRepository.save(savedActor);
+                movieActorRepository.save(movieActor);
+            }
             // 3. MovieDetail 저장
             movieDetail = movieDetailRepository.save(movieDetail);
 
-            // TODO MovieDetail 1 -- N MovieActor
-            // 1. Actor 필드 세팅
-            for (MovieActorInfoDTO movieActorInfoDTO : dto.getMovieActorInfoDTOList()) {
-                // 1. actor
-                Actor actor = movieActorInfoDTO.getActor();
-
-                // 2. movieActor
-                MovieActor movieActor = movieActorInfoDTO.getMovieActor();
-            }
-
-            // TODO Actor 1 -- N MovieActor
         }
     }
 
