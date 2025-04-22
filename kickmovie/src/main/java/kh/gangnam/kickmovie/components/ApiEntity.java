@@ -86,8 +86,16 @@ public class ApiEntity {
         List<MovieActorInfoDTO> dtoList = new ArrayList<>();
         for (CastDTO castDto : dto.getCast()) {
             Actor actor = modelMapper.map(castDto, Actor.class);
-            MovieActor movieActor = modelMapper.map(castDto, MovieActor.class);
+
+            MovieActor movieActor = new MovieActor();
+            movieActor.setName(castDto.getName());
+            movieActor.setProfilePath(castDto.getProfilePath());
+            movieActor.setCastId(castDto.getCastId());
+            movieActor.setCharacter(castDto.getCharacter());
+            movieActor.setCreditId(castDto.getCreditId());
+            movieActor.setActorOrder(castDto.getActorOrder());
             movieActor.setMovieTitle(movieTitle);
+
             MovieActorInfoDTO movieActorInfoDTO = new MovieActorInfoDTO(actor, movieActor);
             dtoList.add(movieActorInfoDTO);
         }
