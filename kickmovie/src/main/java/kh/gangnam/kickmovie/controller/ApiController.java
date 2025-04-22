@@ -50,8 +50,8 @@ public class ApiController {
 //    }
 //
 //    // TODO Open API 장르 데이터 저장하기
-//    @GetMapping("movie/genre")
-//    public GenreResponse genreSave() {
-//        return apiService.genreSave();
-//    }
+    @GetMapping("movie/genre")
+    public GenreResponse genreSave() {
+        return apiService.genreSave();
+    }
 }

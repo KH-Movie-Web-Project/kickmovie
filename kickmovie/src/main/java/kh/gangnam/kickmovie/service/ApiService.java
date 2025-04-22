@@ -70,27 +70,28 @@ public class ApiService {
             // 2. MovieDetail <-> MovieSearch 연관관계 매핑
             MovieDetail movieDetail = dto.getMovieDetail();
             movieDetail.setMovieSearch(movieSearch);
+            movieDetail = movieDetailRepository.save(movieDetail);
+
 
             // TODO MovieDetail 1 -- N MovieActor
             // TODO Actor 1 -- N MovieActor
             // 1. Actor 필드 세팅
             for (MovieActorInfoDTO movieActorInfoDTO : dto.getMovieActorInfoDTOList()) {
                 Actor actor = movieActorInfoDTO.getActor();
+
+                // ⭐ 먼저 저장 (존재하지 않으면)
                 Actor savedActor = actorRepository.findById(actor.getActorId())
-                        .orElseGet(() -> actor);
+                        .orElseGet(() -> actorRepository.save(actor)); // ✅ 여기서 저장 확정
 
                 MovieActor movieActor = movieActorInfoDTO.getMovieActor();
-                movieActor.setMovieDetail(movieDetail);
-                movieActor.setActor(savedActor);
+                movieActor.setMovieDetail(movieDetail);     // MovieDetail은 이미 저장됨
+                movieActor.setActor(savedActor);            // 참조 가능한 Actor
 
-                movieDetail.getMovieActors().add(movieActor);
-                savedActor.getMovieActors().add(movieActor);
-
-                actorRepository.save(savedActor);
-                movieActorRepository.save(movieActor);
+                movieActorRepository.save(movieActor);      // ✅ 안전하게 저장 가능
             }
+
             // 3. MovieDetail 저장
-            movieDetail = movieDetailRepository.save(movieDetail);
+            //movieDetail = movieDetailRepository.save(movieDetail);
 
         }
     }

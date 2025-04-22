@@ -20,8 +20,9 @@ public class MovieDetail {
     private String imdbId;
     private String originalLanguage;
     private String originalTitle;
-    private String overview;
-    private Double popularity;
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String overview;    private Double popularity;
     private String releaseDate;
     private int revenue;
     private int runtime;
