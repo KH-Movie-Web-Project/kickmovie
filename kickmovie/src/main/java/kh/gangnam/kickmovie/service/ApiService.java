@@ -9,10 +9,8 @@ import kh.gangnam.kickmovie.components.ApiResponse;
 import kh.gangnam.kickmovie.dto.AllEntityDTO;
 import kh.gangnam.kickmovie.dto.GenreDTO;
 import kh.gangnam.kickmovie.dto.GenreResponse;
-import kh.gangnam.kickmovie.entity.Actor;
-import kh.gangnam.kickmovie.entity.Genre;
-import kh.gangnam.kickmovie.entity.MovieDetail;
-import kh.gangnam.kickmovie.entity.MovieSearch;
+import kh.gangnam.kickmovie.dto.MovieActorInfoDTO;
+import kh.gangnam.kickmovie.entity.*;
 import kh.gangnam.kickmovie.repository.ActorRepository;
 import kh.gangnam.kickmovie.repository.GenreRepository;
 import kh.gangnam.kickmovie.repository.MovieDetailRepository;
@@ -80,6 +78,13 @@ public class ApiService {
 
             // TODO MovieDetail 1 -- N MovieActor
             // 1. Actor 필드 세팅
+            for (MovieActorInfoDTO movieActorInfoDTO : dto.getMovieActorInfoDTOList()) {
+                // 1. actor
+                Actor actor = movieActorInfoDTO.getActor();
+
+                // 2. movieActor
+                MovieActor movieActor = movieActorInfoDTO.getMovieActor();
+            }
 
             // TODO Actor 1 -- N MovieActor
         }

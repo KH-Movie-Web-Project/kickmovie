@@ -48,7 +48,8 @@ public class ApiEntity {
         );
         List<MovieActorInfoDTO> movieActorInfoDTOList = convertToEntity(
                 apiResponse.actorListData(
-                        apiUtil.getActorListURL(movie_id), headers)
+                        apiUtil.getActorListURL(movie_id), headers),
+                        movieDetail.getTitle()
         );
         return new AllEntityDTO(
                 movieSearchGenreDTO.getMovieSearch(),
@@ -81,11 +82,12 @@ public class ApiEntity {
 
     // TODO ActorDTO actor 엔티티로 변환 후 엔티티 반환
     // ActorDTO → List<Actor>
-    private List<MovieActorInfoDTO> convertToEntity(ActorDTO dto) throws JsonProcessingException {
+    private List<MovieActorInfoDTO> convertToEntity(ActorDTO dto, String movieTitle) throws JsonProcessingException {
         List<MovieActorInfoDTO> dtoList = new ArrayList<>();
         for (CastDTO castDto : dto.getCast()) {
             Actor actor = modelMapper.map(castDto, Actor.class);
             MovieActor movieActor = modelMapper.map(castDto, MovieActor.class);
+            movieActor.setMovieTitle(movieTitle);
             MovieActorInfoDTO movieActorInfoDTO = new MovieActorInfoDTO(actor, movieActor);
             dtoList.add(movieActorInfoDTO);
         }

@@ -1,7 +1,5 @@
 package kh.gangnam.kickmovie.dto;
 
-import kh.gangnam.kickmovie.entity.Actor;
-import kh.gangnam.kickmovie.entity.MovieActor;
 import kh.gangnam.kickmovie.entity.MovieDetail;
 import kh.gangnam.kickmovie.entity.MovieSearch;
 import lombok.Getter;
