@@ -9,7 +9,6 @@ import kh.gangnam.kickmovie.entity.MovieDetail;
 import kh.gangnam.kickmovie.entity.MovieSearch;
 import kh.gangnam.kickmovie.util.ApiUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,6 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class ApiEntity {
 
     private final ModelMapper modelMapper;
@@ -67,12 +65,6 @@ public class ApiEntity {
                     resultDTO.getMovieId(),
                     resultDTO.getGenre_ids()
             );
-            // log 부분
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-            String prettyDTO = objectMapper.writeValueAsString(entity);
-            log.info("Entity: \n{}", prettyDTO);
-            // 여기까지 로그
             movieSearchGenreDTOS.add(new MovieSearchGenreDTO(entity, genreResponseDTO));
         }
         return movieSearchGenreDTOS;
@@ -82,12 +74,6 @@ public class ApiEntity {
     // MovieDetailDTO → MovieDetail
     private MovieDetail convertToEntity(MovieDetailDTO dto) throws JsonProcessingException {
         MovieDetail entity = modelMapper.map(dto, MovieDetail.class);
-        // log 부분
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-        String prettyDTO = objectMapper.writeValueAsString(entity);
-        log.info("MovieDetail Entity:\n{}", prettyDTO);
-        // 여기까지 로그
         return entity;
     }
 
@@ -95,16 +81,10 @@ public class ApiEntity {
     // ActorDTO → List<Actor>
     private List<Actor> convertToEntity(ActorDTO dto) throws JsonProcessingException {
         List<Actor> actorList = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-        // log 부분
         for (CastDTO castDto : dto.getCast()) {
             Actor actor = modelMapper.map(castDto, Actor.class);
-            String prettyActor = objectMapper.writeValueAsString(actor);
-            log.info("Actor Entity:\n{}", prettyActor);
             actorList.add(actor);
         }
-        // 여기까지 로그
         return actorList;
     }
 }
