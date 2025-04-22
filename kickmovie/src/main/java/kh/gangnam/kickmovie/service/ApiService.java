@@ -9,9 +9,11 @@ import kh.gangnam.kickmovie.components.ApiResponse;
 import kh.gangnam.kickmovie.dto.AllEntityDTO;
 import kh.gangnam.kickmovie.dto.GenreDTO;
 import kh.gangnam.kickmovie.dto.GenreResponse;
+import kh.gangnam.kickmovie.entity.Actor;
 import kh.gangnam.kickmovie.entity.Genre;
 import kh.gangnam.kickmovie.entity.MovieDetail;
 import kh.gangnam.kickmovie.entity.MovieSearch;
+import kh.gangnam.kickmovie.repository.ActorRepository;
 import kh.gangnam.kickmovie.repository.GenreRepository;
 import kh.gangnam.kickmovie.repository.MovieDetailRepository;
 import kh.gangnam.kickmovie.repository.MovieSearchRepository;
@@ -35,6 +37,7 @@ public class ApiService {
     private final GenreRepository genreRepository;
     private final MovieSearchRepository movieSearchRepository;
     private final MovieDetailRepository movieDetailRepository;
+    private final ActorRepository actorRepository;
 
 
     // TODO 영화 검색어 입력시 검색된 영화 저장 트랜잭션
@@ -68,7 +71,7 @@ public class ApiService {
 
             // TODO MovieSearch 1 -- 1 MovieDetail
 
-            // 2. MovieDetail에 MovieSearch 연관관계 매핑
+            // 2. MovieDetail <-> MovieSearch 연관관계 매핑
             MovieDetail movieDetail = dto.getMovieDetail();
             movieDetail.setMovieSearch(movieSearch);
 
@@ -76,6 +79,7 @@ public class ApiService {
             movieDetail = movieDetailRepository.save(movieDetail);
 
             // TODO MovieDetail 1 -- N MovieActor
+            // 1. Actor 필드 세팅
 
             // TODO Actor 1 -- N MovieActor
         }

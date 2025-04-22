@@ -28,5 +28,6 @@ public class MovieActor {
     private String character;
     private String creditId;
     private int actorOrder;
+    private String movieTitle;
 
 }

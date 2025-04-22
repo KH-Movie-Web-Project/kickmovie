@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import kh.gangnam.kickmovie.dto.*;
 import kh.gangnam.kickmovie.entity.Actor;
+import kh.gangnam.kickmovie.entity.MovieActor;
 import kh.gangnam.kickmovie.entity.MovieDetail;
 import kh.gangnam.kickmovie.entity.MovieSearch;
 import kh.gangnam.kickmovie.util.ApiUtil;
@@ -45,14 +46,15 @@ public class ApiEntity {
                 apiResponse.detailData(
                         apiUtil.getDetailURL(movie_id), headers)
         );
-        List<Actor> actorList = convertToEntity(
+        List<MovieActorInfoDTO> movieActorInfoDTOList = convertToEntity(
                 apiResponse.actorListData(
                         apiUtil.getActorListURL(movie_id), headers)
         );
-        return new AllEntityDTO(actorList
-                , movieDetail
-                , movieSearchGenreDTO.getMovieSearch()
-                , movieSearchGenreDTO.getGenreResponseDTO());
+        return new AllEntityDTO(
+                movieSearchGenreDTO.getMovieSearch(),
+                movieSearchGenreDTO.getGenreResponseDTO(),
+                movieDetail,
+                movieActorInfoDTOList);
     }
 
     // TODO MovieSearchDTO MovieSearch 엔티티로 변환 후 엔티티 반환
@@ -79,12 +81,14 @@ public class ApiEntity {
 
     // TODO ActorDTO actor 엔티티로 변환 후 엔티티 반환
     // ActorDTO → List<Actor>
-    private List<Actor> convertToEntity(ActorDTO dto) throws JsonProcessingException {
-        List<Actor> actorList = new ArrayList<>();
+    private List<MovieActorInfoDTO> convertToEntity(ActorDTO dto) throws JsonProcessingException {
+        List<MovieActorInfoDTO> dtoList = new ArrayList<>();
         for (CastDTO castDto : dto.getCast()) {
             Actor actor = modelMapper.map(castDto, Actor.class);
-            actorList.add(actor);
+            MovieActor movieActor = modelMapper.map(castDto, MovieActor.class);
+            MovieActorInfoDTO movieActorInfoDTO = new MovieActorInfoDTO(actor, movieActor);
+            dtoList.add(movieActorInfoDTO);
         }
-        return actorList;
+        return dtoList;
     }
 }
