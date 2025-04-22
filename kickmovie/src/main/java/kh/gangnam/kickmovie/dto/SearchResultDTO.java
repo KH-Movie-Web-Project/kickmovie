@@ -15,6 +15,7 @@ public class SearchResultDTO {
     private Long movieId;
     private boolean adult;
     private String backdrop_path;
+    @JsonProperty("genre_ids")
     private List<Integer> genre_ids;
     private String original_language;
     private String original_title;

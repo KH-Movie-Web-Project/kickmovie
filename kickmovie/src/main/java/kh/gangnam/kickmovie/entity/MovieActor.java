@@ -1,9 +1,6 @@
 package kh.gangnam.kickmovie.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
@@ -23,5 +20,13 @@ public class MovieActor {
     @JoinColumn(name = "movie_id")
     private MovieDetail movieDetail;
 
-    //private String role;
+    // 영화와 배우 합친 요소들
+    private String name;
+    private String profilePath;
+    private int castId;
+    @Column(name = "character_name")
+    private String character;
+    private String creditId;
+    private int actorOrder;
+
 }
