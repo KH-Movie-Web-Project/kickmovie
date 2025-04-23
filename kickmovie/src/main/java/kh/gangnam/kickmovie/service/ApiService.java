@@ -1,8 +1,6 @@
 package kh.gangnam.kickmovie.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import jakarta.persistence.EntityNotFoundException;
 import kh.gangnam.kickmovie.components.ApiEntity;
 import kh.gangnam.kickmovie.components.ApiResponse;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +32,12 @@ public class ApiService {
     private final MovieDetailRepository movieDetailRepository;
     private final ActorRepository actorRepository;
 
+    public void responseQuery(String query){
+        // TODO 1. 데이터베이스에 해당 query 영화가 존재하는 지 확인. __{query}__ 로 진행
+
+        // TODO 2. 해당 query 의 movieTitle 이 존재하고, 찾은 영화가 3개 이상이라면 그대로 출력
+    }
+
 
     // TODO 영화 검색어 입력시 검색된 영화 저장 트랜잭션
     @Transactional
@@ -44,14 +47,6 @@ public class ApiService {
 
         // TODO 엔티티 매핑 후 저장 로직
         for (AllEntityDTO dto : dtoList) {
-            /* 로그 Json 방식으로 찍는 법
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-            objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-            String prettyDTO = objectMapper.writeValueAsString(dto);
-            log.info("Entity: \n{}", prettyDTO);
-             */
-
             // TODO MovieSearch N -- M Genre
             MovieSearch movieSearch = dto.getMovieSearch();
 
@@ -72,7 +67,6 @@ public class ApiService {
             movieDetail.setMovieSearch(movieSearch);
             movieDetail = movieDetailRepository.save(movieDetail);
 
-
             // TODO MovieDetail 1 -- N MovieActor
             // TODO Actor 1 -- N MovieActor
             // 1. Actor 필드 세팅
@@ -90,36 +84,8 @@ public class ApiService {
                 movieActorRepository.save(movieActor);      // ✅ 안전하게 저장 가능
             }
 
-            // 3. MovieDetail 저장
-            //movieDetail = movieDetailRepository.save(movieDetail);
-
         }
     }
-
-//    // TODO 영화 검색어로 가져오기 Service 로직
-//    public ResponseEntity<?> searchMovie(String query) {
-//        String url = apiUtil.getSearchURL(query);
-//        return apiResponse.searchListData(url, apiUtil.createHeaders());
-//    }
-//
-//    // TODO 영화 검색어, 년도로 가져오기 Service 로직
-//    public ResponseEntity<?> searchMovie(String query, String year) {
-//        String url = apiUtil.getSearchURL(query, year);
-//        return apiResponse.searchListData(url, apiUtil.createHeaders());
-//    }
-//
-//    // TODO 영화 상세 데이터 가져오기 Service 로직
-//    public ResponseEntity<?> detailMovie(String movieId) {
-//        String url = apiUtil.getDetailURL(movieId);
-//        return apiResponse.detailData(url, apiUtil.createHeaders());
-//    }
-//
-//    // TODO 영화 배우 데이터 가져오기 Service 로직
-//    public ResponseEntity<?> actorMovie(String movieID) {
-//        String url = apiUtil.getActorListURL(movieID);
-//        return apiResponse.actorListData(url, apiUtil.createHeaders());
-//    }
-
     // TODO 영화 장르 데이터 응답받아 저장하는 로직
     public GenreResponse genreSave() {
         String url = apiUtil.getGenreURL();
