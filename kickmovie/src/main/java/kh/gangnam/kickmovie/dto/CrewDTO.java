@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class CrewDto {
+public class CrewDTO {
     private boolean adult;
     private int gender;
     private int id;

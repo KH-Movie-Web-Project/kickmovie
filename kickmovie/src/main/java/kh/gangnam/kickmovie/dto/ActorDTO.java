@@ -8,9 +8,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ActorDto {
+public class ActorDTO {
     private Long id;
-    private List<CastDto> cast;
-    private List<CrewDto> crew;
+    private List<CastDTO> cast;
+    private List<CrewDTO> crew;
 
 }

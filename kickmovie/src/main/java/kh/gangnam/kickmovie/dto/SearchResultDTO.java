@@ -1,5 +1,6 @@
 package kh.gangnam.kickmovie.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,9 +11,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class SearchResultDTO {
-    private int id;
+    @JsonProperty("id")
+    private Long movieId;
     private boolean adult;
     private String backdrop_path;
+    @JsonProperty("genre_ids")
     private List<Integer> genre_ids;
     private String original_language;
     private String original_title;

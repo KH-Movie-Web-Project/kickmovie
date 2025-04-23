@@ -5,10 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import kh.gangnam.kickmovie.dto.*;
 import kh.gangnam.kickmovie.entity.Actor;
+import kh.gangnam.kickmovie.entity.MovieActor;
+import kh.gangnam.kickmovie.entity.MovieDetail;
 import kh.gangnam.kickmovie.entity.MovieSearch;
+import kh.gangnam.kickmovie.util.ApiUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -16,43 +19,86 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class ApiEntity {
 
     private final ModelMapper modelMapper;
+    private final ApiResponse apiResponse;
+    private final ApiUtil apiUtil;
+
+    // TODO Service 에서 검색어 한 번 들어왔을 때 저장해야 하는 데이터셋 지정
+    public List<AllEntityDTO> responseApi(String url) throws JsonProcessingException {
+        HttpHeaders headers = apiUtil.createHeaders();
+        List<MovieSearchGenreDTO> movieSearchList = convertToEntity(
+                apiResponse.searchListData(url, headers)
+        );
+        List<AllEntityDTO> allEntityDTOList = new ArrayList<>();
+        for (MovieSearchGenreDTO dto : movieSearchList) {
+            allEntityDTOList.add(setMovieEntity(dto, headers));
+        }
+        return allEntityDTOList;
+    }
+
+    // TODO AllEntityDTO movieSearch 한 개당 저장할 데이터셋
+    private AllEntityDTO setMovieEntity(MovieSearchGenreDTO movieSearchGenreDTO, HttpHeaders headers) throws JsonProcessingException {
+
+        String movie_id = String.valueOf(movieSearchGenreDTO.getMovieSearch().getMovieId());
+        MovieDetail movieDetail = convertToEntity(
+                apiResponse.detailData(
+                        apiUtil.getDetailURL(movie_id), headers)
+        );
+        List<MovieActorInfoDTO> movieActorInfoDTOList = convertToEntity(
+                apiResponse.actorListData(
+                        apiUtil.getActorListURL(movie_id), headers),
+                        movieDetail.getTitle()
+        );
+        return new AllEntityDTO(
+                movieSearchGenreDTO.getMovieSearch(),
+                movieSearchGenreDTO.getGenreResponseDTO(),
+                movieDetail,
+                movieActorInfoDTOList);
+    }
 
     // TODO MovieSearchDTO MovieSearch 엔티티로 변환 후 엔티티 반환
-    public void convertToEntity(MovieSearchDTO dto) throws JsonProcessingException {
-        List<MovieSearch> movieSearchList = new ArrayList<>();
+    // MovieSearchDTO → List<MovieSearch>
+    private List<MovieSearchGenreDTO> convertToEntity(MovieSearchDTO dto) throws JsonProcessingException {
+        List<MovieSearchGenreDTO> movieSearchGenreDTOS = new ArrayList<>();
         for (SearchResultDTO resultDTO : dto.getResults()) {
             MovieSearch entity = modelMapper.map(resultDTO, MovieSearch.class);
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-            String prettyDTO = objectMapper.writeValueAsString(entity);
-            log.info("Entity: \n{}", prettyDTO);
-            movieSearchList.add(entity);
+            GenreResponseDTO genreResponseDTO = new GenreResponseDTO(
+                    resultDTO.getMovieId(),
+                    resultDTO.getGenre_ids()
+            );
+            movieSearchGenreDTOS.add(new MovieSearchGenreDTO(entity, genreResponseDTO));
         }
-    }
-    // TODO MovieDetailDTO MovieDetail 엔티티로 변환 후 엔티티 반환
-    public void convertToEntity(MovieDetailDTO dto){
+        return movieSearchGenreDTOS;
 
     }
+    // TODO MovieDetailDTO MovieDetail 엔티티로 변환 후 엔티티 반환
+    // MovieDetailDTO → MovieDetail
+    private MovieDetail convertToEntity(MovieDetailDTO dto) throws JsonProcessingException {
+        MovieDetail entity = modelMapper.map(dto, MovieDetail.class);
+        return entity;
+    }
+
     // TODO ActorDTO actor 엔티티로 변환 후 엔티티 반환
-    public void convertToEntity(ActorDto dto){
-        for (CastDto castDto : dto.getCast()) {
-            Actor actor = new Actor();
-            actor.setActorId(castDto.getId());
-            actor.setAdult(castDto.isAdult());
-            actor.setGender(castDto.getGender());
-            actor.setKnownForDepartment(castDto.getKnownForDepartment());
-            actor.setName(castDto.getName());
-            actor.setOriginalName(castDto.getOriginalName());
-            actor.setPopularity(castDto.getPopularity());
-            actor.setProfilePath(castDto.getProfilePath());
-            actor.setCastId(castDto.getCastId());
-            actor.setCharacter(castDto.getCharacter());
-            actor.setCreditId(castDto.getCreditId());
-            actor.setOrder(castDto.getOrder());
+    // ActorDTO → List<Actor>
+    private List<MovieActorInfoDTO> convertToEntity(ActorDTO dto, String movieTitle) throws JsonProcessingException {
+        List<MovieActorInfoDTO> dtoList = new ArrayList<>();
+        for (CastDTO castDto : dto.getCast()) {
+            Actor actor = modelMapper.map(castDto, Actor.class);
+
+            MovieActor movieActor = new MovieActor();
+            movieActor.setName(castDto.getName());
+            movieActor.setProfilePath(castDto.getProfilePath());
+            movieActor.setCastId(castDto.getCastId());
+            movieActor.setCharacter(castDto.getCharacter());
+            movieActor.setCreditId(castDto.getCreditId());
+            movieActor.setActorOrder(castDto.getActorOrder());
+            movieActor.setMovieTitle(movieTitle);
+
+            MovieActorInfoDTO movieActorInfoDTO = new MovieActorInfoDTO(actor, movieActor);
+            dtoList.add(movieActorInfoDTO);
         }
+        return dtoList;
     }
 }

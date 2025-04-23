@@ -1,25 +1,43 @@
 package kh.gangnam.kickmovie.entity;
 
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
 @Getter
 @Setter
 @ToString
 public class MovieSearch {
-    private int id;
+    @Id
+    private Long movieId;
     private boolean adult;
     private String backdrop_path;
     private String original_language;
     private String original_title;
-    private String overview;
-    private double popularity;
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String overview;    private double popularity;
     private String poster_path;
     private String release_date;
     private String title;
     private boolean video;
     private double vote_average;
     private int vote_count;
+
+    @ManyToMany
+    @JoinTable(
+            name = "movie_genre",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private List<Genre> genres = new ArrayList<>();
+
+    @OneToOne(mappedBy = "movieSearch")
+    private MovieDetail movieDetail;
 }
