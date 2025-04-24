@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/genre")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class GenreController {
 
     private final GenreService genreService;
 
-    @GetMapping("/{genreId}/movies")
-    public ResponseEntity<ResponseGenreMovieDTO> getMoviesByGenre(@PathVariable Long genreId) {
+    @GetMapping("/genre/movies")
+    public ResponseEntity<ResponseGenreMovieDTO> getMoviesByGenre(@RequestParam(name = "genreId") Long genreId) {
         return ResponseEntity.ok(genreService.getMoviesByGenre(genreId));
     }
 }

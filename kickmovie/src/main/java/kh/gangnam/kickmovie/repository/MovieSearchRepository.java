@@ -12,5 +12,5 @@ public interface MovieSearchRepository extends JpaRepository<MovieSearch, Long> 
     List<MovieSearch> findByTitleContainingWithGenres(@Param("query") String query);
 
     @Query("SELECT m FROM MovieSearch m JOIN m.genres g WHERE g.id = :genreId")
-    List<MovieSearch> findByGenreId(Long genreId);
+    List<MovieSearch> findByGenreId(@Param("genreId") Long genreId);
 }
