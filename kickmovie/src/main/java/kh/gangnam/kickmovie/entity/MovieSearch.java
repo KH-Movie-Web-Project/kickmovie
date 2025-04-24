@@ -22,7 +22,8 @@ public class MovieSearch {
     private String original_title;
     @Lob
     @Column(columnDefinition = "TEXT")
-    private String overview;    private double popularity;
+    private String overview;
+    private double popularity;
     private String poster_path;
     private String release_date;
     private String title;

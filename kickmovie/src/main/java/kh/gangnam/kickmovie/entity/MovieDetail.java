@@ -24,14 +24,14 @@ public class MovieDetail {
     @Column(columnDefinition = "TEXT")
     private String overview;    private Double popularity;
     private String releaseDate;
-    private int revenue;
-    private int runtime;
+    private long revenue;
+    private long runtime;
     private String status;
     private String tagline;
     private String title;
     private boolean video;
     private Double voteAverage;
-    private int voteCount;
+    private long voteCount;
 
     @OneToOne
     @JoinColumn(name = "id")

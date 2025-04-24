@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.persistence.EntityNotFoundException;
 import kh.gangnam.kickmovie.components.ApiEntity;
 import kh.gangnam.kickmovie.components.ApiResponse;
-import kh.gangnam.kickmovie.dto.AllEntityDTO;
-import kh.gangnam.kickmovie.dto.GenreDTO;
-import kh.gangnam.kickmovie.dto.GenreResponse;
-import kh.gangnam.kickmovie.dto.MovieActorInfoDTO;
+import kh.gangnam.kickmovie.dto.*;
 import kh.gangnam.kickmovie.entity.*;
 import kh.gangnam.kickmovie.repository.*;
 import kh.gangnam.kickmovie.util.ApiUtil;
@@ -17,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,16 +30,29 @@ public class ApiService {
     private final MovieDetailRepository movieDetailRepository;
     private final ActorRepository actorRepository;
 
-    public void responseQuery(String query){
+    public List<ResponseMovieSearchDTO> responseQuery(String query) throws JsonProcessingException {
         // TODO 1. 데이터베이스에 해당 query 영화가 존재하는 지 확인. __{query}__ 로 진행
+        System.out.println("데이터베이스 조회 전");
+        List<MovieSearch> movies = movieSearchRepository.findByTitleContainingWithGenres(query);
+        System.out.println("데이터베이스 조회 후");
+        // TODO 2. 해당 query 의 movieTitle 이 존재하고, 찾은 영화가 3개r 이상이라면 그대로 출력.
+        // TODO 2-1. return MovieSearch Entity + Genre Entity = ResponseMovieSearchDTO
+        if (movies.size() < 3) {
+            System.out.println("3개 미만이였습니다.");
+            saveAllEntity(query); // 1. API에서 새 데이터 저장
+            movies = movieSearchRepository.findByTitleContainingWithGenres(query); // 2. 업데이트된 전체 데이터 재조회
+        }
 
-        // TODO 2. 해당 query 의 movieTitle 이 존재하고, 찾은 영화가 3개 이상이라면 그대로 출력
+        // 4. DTO 변환
+        return movies.stream()
+                .map(apiEntity::convertToResponseDTO) // ✅ apiEntity 메서드 사용
+                .collect(Collectors.toList());
     }
 
 
     // TODO 영화 검색어 입력시 검색된 영화 저장 트랜잭션
     @Transactional
-    public void saveAllEntity(String query) throws JsonProcessingException {
+    private void saveAllEntity(String query) throws JsonProcessingException {
         // TODO 검색어 리스트에 대한 엔티티 DTO set 가져오기
         List<AllEntityDTO> dtoList = apiEntity.responseApi(apiUtil.getSearchURL(query));
 

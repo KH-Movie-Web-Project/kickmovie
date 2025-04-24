@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -36,6 +37,15 @@ public class ApiEntity {
             allEntityDTOList.add(setMovieEntity(dto, headers));
         }
         return allEntityDTOList;
+    }
+    public ResponseMovieSearchDTO convertToResponseDTO(MovieSearch movie) {
+        ResponseMovieSearch responseMovieSearchDTO = modelMapper.map(movie, ResponseMovieSearch.class);
+
+        List<GenreDTO> genreDTOs = movie.getGenres().stream()
+                .map(genre -> new GenreDTO(genre.getId(), genre.getName()))
+                .collect(Collectors.toList());
+
+        return new ResponseMovieSearchDTO(responseMovieSearchDTO, genreDTOs);
     }
 
     // TODO AllEntityDTO movieSearch 한 개당 저장할 데이터셋
@@ -75,9 +85,8 @@ public class ApiEntity {
     }
     // TODO MovieDetailDTO MovieDetail 엔티티로 변환 후 엔티티 반환
     // MovieDetailDTO → MovieDetail
-    private MovieDetail convertToEntity(MovieDetailDTO dto) throws JsonProcessingException {
-        MovieDetail entity = modelMapper.map(dto, MovieDetail.class);
-        return entity;
+    private MovieDetail convertToEntity(MovieDetailDTO dto) {
+        return modelMapper.map(dto, MovieDetail.class);
     }
 
     // TODO ActorDTO actor 엔티티로 변환 후 엔티티 반환
