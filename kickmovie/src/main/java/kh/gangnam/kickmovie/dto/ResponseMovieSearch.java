@@ -1,5 +1,6 @@
 package kh.gangnam.kickmovie.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,15 +9,22 @@ import lombok.Setter;
 public class ResponseMovieSearch {
     private Long movieId;
     private boolean adult;
-    private String backdrop_path;
-    private String original_language;
-    private String original_title;
+    @JsonProperty("backdrop_path")
+    private String backdropPath;
+    @JsonProperty("original_language")
+    private String originalLanguage;
+    @JsonProperty("original_title")
+    private String originalTitle;
     private String overview;
     private double popularity;
-    private String poster_path;
-    private String release_date;
+    @JsonProperty("poster_path")
+    private String posterPath;
+    @JsonProperty("release_date")
+    private String releaseDate;
     private String title;
     private boolean video;
-    private double vote_average;
-    private int vote_count;
+    @JsonProperty("vote_average")
+    private double voteAverage;
+    @JsonProperty("vote_count")
+    private int voteCount;
 }
