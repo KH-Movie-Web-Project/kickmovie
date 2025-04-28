@@ -24,6 +24,9 @@ public class MovieDetail {
     @Column(columnDefinition = "TEXT")
     private String overview;    private Double popularity;
     private String releaseDate;
+    private long budget;
+    private String posterPath;
+    private String backdropPath;
     private long revenue;
     private long runtime;
     private String status;

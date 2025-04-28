@@ -22,6 +22,9 @@ public class MovieDetailInfoDTO {
     private String originalTitle;
     private String overview;    private Double popularity;
     private String releaseDate;
+    private long budget;
+    private String posterPath;
+    private String backdropPath;
     private int revenue;
     private int runtime;
     private String status;
