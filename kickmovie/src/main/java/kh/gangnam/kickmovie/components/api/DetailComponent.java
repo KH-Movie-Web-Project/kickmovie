@@ -1,7 +1,10 @@
 package kh.gangnam.kickmovie.components.api;
 
+import kh.gangnam.kickmovie.dto.MovieDetailDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -13,9 +16,16 @@ public class DetailComponent{
 
     private final RestTemplate restTemplate;
 
-    public ResponseEntity<?> fetchData(String url, HttpHeaders headers) {
-        // TODO API 영화 상세 응답 데이터 DTO 제작하여 반환하기
-        // URL과 Header는 Service에서 구현
-        return null;
+    public MovieDetailDTO fetchData(String url, HttpHeaders headers) {
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<MovieDetailDTO> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                requestEntity,
+                MovieDetailDTO.class
+        );
+        return response.getBody();
     }
 }
