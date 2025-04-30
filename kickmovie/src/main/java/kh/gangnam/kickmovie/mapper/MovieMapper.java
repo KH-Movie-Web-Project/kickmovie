@@ -33,7 +33,18 @@ public class MovieMapper {
 
     public ResponseMovieDetailDTO toResponseMovieDetailDTO(MovieDetail detail) {
         ResponseMovieDetailDTO response = new ResponseMovieDetailDTO();
-        response.setMovieDetailInfoDTO(toDetailDTO(detail));
+        MovieDetailInfoDTO infoDTO = toDetailDTO(detail);
+
+        // ⭐ MovieSearch 통해서 장르 리스트 가져와서 수동으로 넣어줌
+        if (detail.getMovieSearch() != null) {
+            infoDTO.setGenres(
+                    detail.getMovieSearch().getGenres().stream()
+                            .map(genre -> new GenreDTO(genre.getId(), genre.getName()))
+                            .collect(Collectors.toList())
+            );
+        }
+
+        response.setMovieDetailInfoDTO(infoDTO);
         response.setMovieActorDTOList(toActorDTOList(detail.getMovieActors()));
         return response;
     }
