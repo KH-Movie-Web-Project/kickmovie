@@ -2,6 +2,7 @@ package kh.gangnam.kickmovie.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import kh.gangnam.kickmovie.dto.GenreResponse;
+import kh.gangnam.kickmovie.dto.NowDTO;
 import kh.gangnam.kickmovie.dto.ResponseMovieSearchDTO;
 import kh.gangnam.kickmovie.service.ApiService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,10 @@ public class ApiController {
     @GetMapping("search")
     public List<ResponseMovieSearchDTO> getMovieSearch(@RequestParam(name = "query") String query) throws JsonProcessingException {
         return apiService.responseQuery(query);
+    }
+    @GetMapping("now")
+    public NowDTO getNowMovie(){
+        return apiService.getNowDTO();
     }
 
 

@@ -109,4 +109,8 @@ public class ApiService {
         }
         return genreResponse;
     }
+    public NowDTO getNowDTO(){
+        String url = apiUtil.getNowURL();
+        return apiResponse.nowListData(url, apiUtil.createHeaders());
+    }
 }

@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,6 +24,8 @@ public class MovieDetailInfoDTO {
     private String originalTitle;
     private String overview;    private Double popularity;
     private String releaseDate;
+    private List<GenreDTO> genres;
+
     private long budget;
     private String posterPath;
     private String backdropPath;

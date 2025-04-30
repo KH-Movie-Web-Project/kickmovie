@@ -31,6 +31,10 @@ public class MovieDetailDTO {
     private List<String> originCountry;
     @JsonProperty("original_language")
     private String originalLanguage;
+    @JsonProperty("poster_path")
+    private String posterPath;
+    @JsonProperty("backdrop_path")
+    private String backdropPath;
     @JsonProperty("original_title")
     private String originalTitle;
     private String overview;

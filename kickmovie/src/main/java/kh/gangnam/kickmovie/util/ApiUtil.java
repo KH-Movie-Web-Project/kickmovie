@@ -20,6 +20,9 @@ public class ApiUtil {
     @Getter
     @Value("${api.genre}")
     private String genreURL;
+    @Value("${api.now}")
+    @Getter
+    private String nowURL;
 
     public String getSearchURL(String query){
         return searchURL + "?query=" + query + "&language=ko";
@@ -33,6 +36,7 @@ public class ApiUtil {
     public String getActorListURL(String movieID){
         return actorListURL + movieID + "/credits?language=ko";
     }
+
 
     public HttpHeaders createHeaders() {
         HttpHeaders headers = new HttpHeaders();

@@ -1,6 +1,7 @@
 package kh.gangnam.kickmovie.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import kh.gangnam.kickmovie.dto.NowDTO;
 import kh.gangnam.kickmovie.dto.ResponseMovieDetailDTO;
 import kh.gangnam.kickmovie.entity.MovieDetail;
 import kh.gangnam.kickmovie.mapper.MovieMapper;
@@ -21,4 +22,5 @@ public class MovieService {
 
         return movieMapper.toResponseMovieDetailDTO(entity);
     }
+
 }

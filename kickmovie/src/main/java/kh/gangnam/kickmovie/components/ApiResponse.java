@@ -1,9 +1,6 @@
 package kh.gangnam.kickmovie.components;
 
-import kh.gangnam.kickmovie.components.api.ActorListComponent;
-import kh.gangnam.kickmovie.components.api.DetailComponent;
-import kh.gangnam.kickmovie.components.api.GenreListComponent;
-import kh.gangnam.kickmovie.components.api.SearchListComponent;
+import kh.gangnam.kickmovie.components.api.*;
 import kh.gangnam.kickmovie.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +14,7 @@ public class ApiResponse {
     private final DetailComponent detailComponent;
     private final ActorListComponent actorListComponent;
     private final GenreListComponent genreListComponent;
+    private final NowListComponent nowListComponent;
 
 
     public MovieSearchDTO searchListData(String url, HttpHeaders headers) {
@@ -30,6 +28,10 @@ public class ApiResponse {
     }
     public GenreResponse genreListData(String url, HttpHeaders headers) {
         return genreListComponent.fetchData(url, headers);
+    }
+
+    public NowDTO nowListData(String url, HttpHeaders headers) {
+        return nowListComponent.fetchData(url, headers);
     }
 
 }
